@@ -12,7 +12,24 @@
 		35B6D9911D7FB595002D31E4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B6D98F1D7FB595002D31E4 /* Main.storyboard */; };
 		35B6D9931D7FB595002D31E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35B6D9921D7FB595002D31E4 /* Assets.xcassets */; };
 		35B6D9961D7FB595002D31E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35B6D9941D7FB595002D31E4 /* LaunchScreen.storyboard */; };
+		35B6D99E1D7FB5C5002D31E4 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6D99D1D7FB5C5002D31E4 /* Networking.swift */; };
+		35B6D9A01D7FB974002D31E4 /* RedditAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6D99F1D7FB974002D31E4 /* RedditAPI.swift */; };
+		35B6D9A21D7FB9A7002D31E4 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6D9A11D7FB9A7002D31E4 /* Helpers.swift */; };
+		35B6D9AA1D7FBE5E002D31E4 /* MUYRedditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6D9A91D7FBE5E002D31E4 /* MUYRedditTests.swift */; };
+		35B6D9B11D7FBEB5002D31E4 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6D99D1D7FB5C5002D31E4 /* Networking.swift */; };
+		35B6D9B21D7FBEB5002D31E4 /* RedditAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6D99F1D7FB974002D31E4 /* RedditAPI.swift */; };
+		35B6D9B31D7FBEB5002D31E4 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B6D9A11D7FB9A7002D31E4 /* Helpers.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		35B6D9AC1D7FBE5E002D31E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35B6D9801D7FB595002D31E4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35B6D9871D7FB595002D31E4;
+			remoteInfo = MUYReddit;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		35B6D9881D7FB595002D31E4 /* MUYReddit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MUYReddit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,10 +39,23 @@
 		35B6D9921D7FB595002D31E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		35B6D9951D7FB595002D31E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		35B6D9971D7FB595002D31E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35B6D99D1D7FB5C5002D31E4 /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		35B6D99F1D7FB974002D31E4 /* RedditAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedditAPI.swift; sourceTree = "<group>"; };
+		35B6D9A11D7FB9A7002D31E4 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		35B6D9A71D7FBE5E002D31E4 /* MUYRedditTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MUYRedditTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		35B6D9A91D7FBE5E002D31E4 /* MUYRedditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MUYRedditTests.swift; sourceTree = "<group>"; };
+		35B6D9AB1D7FBE5E002D31E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		35B6D9851D7FB595002D31E4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35B6D9A41D7FBE5E002D31E4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -39,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				35B6D98A1D7FB595002D31E4 /* MUYReddit */,
+				35B6D9A81D7FBE5E002D31E4 /* MUYRedditTests */,
 				35B6D9891D7FB595002D31E4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -47,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				35B6D9881D7FB595002D31E4 /* MUYReddit.app */,
+				35B6D9A71D7FBE5E002D31E4 /* MUYRedditTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,8 +92,20 @@
 				35B6D9921D7FB595002D31E4 /* Assets.xcassets */,
 				35B6D9941D7FB595002D31E4 /* LaunchScreen.storyboard */,
 				35B6D9971D7FB595002D31E4 /* Info.plist */,
+				35B6D99D1D7FB5C5002D31E4 /* Networking.swift */,
+				35B6D99F1D7FB974002D31E4 /* RedditAPI.swift */,
+				35B6D9A11D7FB9A7002D31E4 /* Helpers.swift */,
 			);
 			path = MUYReddit;
+			sourceTree = "<group>";
+		};
+		35B6D9A81D7FBE5E002D31E4 /* MUYRedditTests */ = {
+			isa = PBXGroup;
+			children = (
+				35B6D9A91D7FBE5E002D31E4 /* MUYRedditTests.swift */,
+				35B6D9AB1D7FBE5E002D31E4 /* Info.plist */,
+			);
+			path = MUYRedditTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -84,6 +128,24 @@
 			productReference = 35B6D9881D7FB595002D31E4 /* MUYReddit.app */;
 			productType = "com.apple.product-type.application";
 		};
+		35B6D9A61D7FBE5E002D31E4 /* MUYRedditTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35B6D9AE1D7FBE5E002D31E4 /* Build configuration list for PBXNativeTarget "MUYRedditTests" */;
+			buildPhases = (
+				35B6D9A31D7FBE5E002D31E4 /* Sources */,
+				35B6D9A41D7FBE5E002D31E4 /* Frameworks */,
+				35B6D9A51D7FBE5E002D31E4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				35B6D9AD1D7FBE5E002D31E4 /* PBXTargetDependency */,
+			);
+			name = MUYRedditTests;
+			productName = MUYRedditTests;
+			productReference = 35B6D9A71D7FBE5E002D31E4 /* MUYRedditTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -98,6 +160,12 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = A45WY99R85;
 						ProvisioningStyle = Automatic;
+					};
+					35B6D9A61D7FBE5E002D31E4 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = A45WY99R85;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 35B6D9871D7FB595002D31E4;
 					};
 				};
 			};
@@ -115,6 +183,7 @@
 			projectRoot = "";
 			targets = (
 				35B6D9871D7FB595002D31E4 /* MUYReddit */,
+				35B6D9A61D7FBE5E002D31E4 /* MUYRedditTests */,
 			);
 		};
 /* End PBXProject section */
@@ -130,6 +199,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		35B6D9A51D7FBE5E002D31E4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -137,12 +213,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35B6D9A01D7FB974002D31E4 /* RedditAPI.swift in Sources */,
+				35B6D99E1D7FB5C5002D31E4 /* Networking.swift in Sources */,
 				35B6D98E1D7FB595002D31E4 /* ViewController.swift in Sources */,
+				35B6D9A21D7FB9A7002D31E4 /* Helpers.swift in Sources */,
 				35B6D98C1D7FB595002D31E4 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		35B6D9A31D7FBE5E002D31E4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35B6D9AA1D7FBE5E002D31E4 /* MUYRedditTests.swift in Sources */,
+				35B6D9B11D7FBEB5002D31E4 /* Networking.swift in Sources */,
+				35B6D9B21D7FBEB5002D31E4 /* RedditAPI.swift in Sources */,
+				35B6D9B31D7FBEB5002D31E4 /* Helpers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		35B6D9AD1D7FBE5E002D31E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35B6D9871D7FB595002D31E4 /* MUYReddit */;
+			targetProxy = 35B6D9AC1D7FBE5E002D31E4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		35B6D98F1D7FB595002D31E4 /* Main.storyboard */ = {
@@ -281,6 +379,34 @@
 			};
 			name = Release;
 		};
+		35B6D9AF1D7FBE5E002D31E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = A45WY99R85;
+				INFOPLIST_FILE = MUYRedditTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.nameghino.MUYRedditTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MUYReddit.app/MUYReddit";
+			};
+			name = Debug;
+		};
+		35B6D9B01D7FBE5E002D31E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = A45WY99R85;
+				INFOPLIST_FILE = MUYRedditTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.nameghino.MUYRedditTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MUYReddit.app/MUYReddit";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -298,6 +424,14 @@
 			buildConfigurations = (
 				35B6D99B1D7FB595002D31E4 /* Debug */,
 				35B6D99C1D7FB595002D31E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		35B6D9AE1D7FBE5E002D31E4 /* Build configuration list for PBXNativeTarget "MUYRedditTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35B6D9AF1D7FBE5E002D31E4 /* Debug */,
+				35B6D9B01D7FBE5E002D31E4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
