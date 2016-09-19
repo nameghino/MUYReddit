@@ -144,7 +144,6 @@ extension RedditPostListViewController : UITableViewDataSource {
 //                    cell.imageView?.image = nil
 //                case .success(let image):
 //                    cell.imageView?.image = image
-//                    cell.imageView?.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
 //                }
 //            }
 //        }
