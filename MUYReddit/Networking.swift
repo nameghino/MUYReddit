@@ -36,6 +36,9 @@ public protocol Networking {
 
 extension Networking {
     func request<ResourceType: Resource>(request: URLRequest, fireImmediately: Bool = true, callback: @escaping (Result<ResourceType>) -> Void) -> URLSessionTask {
+
+        print("🔼 request: \(request)")
+
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard error == nil else {
                 let r = Result<ResourceType>.error(NetworkError.wrapped(error!))
