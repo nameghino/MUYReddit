@@ -68,7 +68,7 @@ class RedditPostViewModel : NSObject {
 
 class RedditPostListViewModel : NSObject {
     private(set) var posts: [RedditPostViewModel] = []
-    
+
     var subreddit: String = "argentina"
     var count: Int { return posts.count }
     
@@ -96,7 +96,11 @@ class RedditPostListViewController: UIViewController {
     
     fileprivate static let ReuseIdentifier = "RedditPostCell"
     
-    var postList: RedditPostListViewModel = RedditPostListViewModel()
+    var postList: RedditPostListViewModel = RedditPostListViewModel() {
+        didSet {
+            update()
+        }
+    }
     
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -109,7 +113,6 @@ class RedditPostListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func didReceiveMemoryWarning() {
@@ -118,10 +121,18 @@ class RedditPostListViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        update()
+    }
+}
+
+extension RedditPostListViewController {
+    fileprivate func update() {
+        navigationItem.title = "r/\(postList.subreddit)"
         postList.fetch { [unowned self] in
             DispatchQueue.main.async(execute: self.tableView.reloadData)
         }
     }
+
 }
 
 extension RedditPostListViewController : UITableViewDataSource {
@@ -131,23 +142,13 @@ extension RedditPostListViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RedditPostListViewController.ReuseIdentifier, for: indexPath)
+        cell.selectionStyle = .none
         let vm = postList[indexPath.row]
         set(content: vm, forCell: cell)
         return cell
     }
     
     private func set(content: RedditPostViewModel, forCell cell: UITableViewCell) {
-//        content.fetchThumbnail { result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .error(_):
-//                    cell.imageView?.image = nil
-//                case .success(let image):
-//                    cell.imageView?.image = image
-//                }
-//            }
-//        }
-        
         cell.textLabel?.text = content.title
         cell.textLabel?.numberOfLines = 0
         cell.detailTextLabel?.attributedText = content.subtitle
