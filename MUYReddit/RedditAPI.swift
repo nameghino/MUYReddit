@@ -17,12 +17,15 @@ public enum MUYRedditError : Error {
 struct RedditListingAPIResponse : Resource {
     
     let posts: [RedditPost]
+    let continueToken: String
     
     init(container: [String : AnyObject]) {
         do {
             let data: [String : AnyObject] = try "data" <- container
             let children: [[String : AnyObject]] = try "children" <- data
-            
+
+            self.continueToken = try "after" <- data
+
             self.posts = children.flatMap { item -> RedditPost? in
                 guard let itemData: [String : AnyObject] = try? "data" <- item else { return nil }
                 return RedditPost(container: itemData)
@@ -94,6 +97,7 @@ class RedditAPI : Networking {
     func fetchListingFor(
         subreddit: String,
         order: RedditAPI.Order = .new,
+        count: Int = 20,
         continueToken: String? = nil,
         callback: @escaping (Result<RedditListingAPIResponse>) -> Void) -> TaskIdentifier {
         
@@ -102,9 +106,14 @@ class RedditAPI : Networking {
         
         guard var components = URLComponents(url: target, resolvingAgainstBaseURL: false) else { fatalError("something's up with the target url") }
         components.queryItems = [
-            URLQueryItem(name: "limit", value: "20")
+            URLQueryItem(name: "limit", value: "20"),
+            URLQueryItem(name: "raw_json", value: "1")
         ]
-        
+
+        if let after = continueToken {
+            components.queryItems?.append(URLQueryItem(name: "after", value: after))
+        }
+
         let request = URLRequest(url: components.url!)
         let task = self.request(request: request, fireImmediately: false, callback: callback)
         inflight[identifier] = task
