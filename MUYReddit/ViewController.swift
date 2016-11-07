@@ -8,97 +8,6 @@
 
 import UIKit
 
-class RedditPostViewModel : NSObject {
-    private static let backgroundQueue = DispatchQueue(label: "viewmodel")
-    private let post: RedditPost
-
-    init(post: RedditPost) {
-        self.post = post
-    }
-
-    var title: String { return post.title }
-    var subtitle: NSAttributedString {
-        let subtitle = NSMutableAttributedString()
-        let attribution = NSAttributedString(string: "por \(post.author)", attributes: [NSForegroundColorAttributeName : UIColor.black])
-        let source = NSAttributedString(string: " - via \(post.domain)", attributes: [NSForegroundColorAttributeName : UIColor.gray])
-        subtitle.append(attribution)
-        subtitle.append(source)
-        return subtitle
-    }
-
-    private var cachedResult: Result<UIImage>? = nil
-    private var inflightThumbnailTask: DispatchWorkItem? = nil
-
-    func fetchThumbnail(callback: @escaping (Result<UIImage>) -> Void) {
-
-        if let result = cachedResult {
-            callback(result)
-            return
-        }
-
-        inflightThumbnailTask = DispatchWorkItem(qos: .userInitiated, flags: []) { [weak self] in
-            guard let sself = self else { return }
-            do {
-                guard let url = sself.post.thumbnailURL else {
-                    let domainError = MUYRedditError.generic("post has no thumbnail")
-                    callback(.error(domainError))
-                    return
-                }
-                let data = try Data(contentsOf: url)
-                guard let image = UIImage(data: data) else {
-                    let domainError = MUYRedditError.generic("downloaded data has no image")
-                    callback(.error(domainError))
-                    return
-                }
-                let result = Result<UIImage>.success(image)
-                self?.cachedResult = result
-                callback(result)
-            } catch (let error) {
-                let domainError = MUYRedditError.wrapped(error)
-                callback(.error(domainError))
-            }
-        }
-        RedditPostViewModel.backgroundQueue.async(execute: inflightThumbnailTask!)
-    }
-
-    func cancelThumbnailFetch() {
-        inflightThumbnailTask?.cancel()
-    }
-}
-
-class RedditPostListViewModel : NSObject {
-    private(set) var posts: [RedditPostViewModel] = []
-
-    var subreddit: String = "argentina"
-    var count: Int { return posts.count }
-
-    private let service = RedditAPI()
-
-    private var continueToken: String? = nil
-
-    init(subreddit: String) {
-        self.subreddit = subreddit
-    }
-
-    func fetch(callback: @escaping (Void) -> Void) {
-        _ = service.fetchListingFor(subreddit: subreddit, continueToken: continueToken) { [weak self] result in
-            defer { callback() }
-            guard let sself = self else { return }
-            switch result {
-            case .error(let error):
-                fatalError("\(error)")
-            case .success(let data):
-                sself.continueToken = data.continueToken
-                sself.posts += data.posts.map { RedditPostViewModel(post: $0) }
-            }
-        }
-    }
-
-    subscript(i: Int) -> RedditPostViewModel {
-        return posts[i]
-    }
-}
-
 private enum PostListSection: Int {
     case posts
     case loadMore
@@ -153,8 +62,8 @@ class RedditPostListViewController: UIViewController {
 extension RedditPostListViewController {
     fileprivate func update() {
         navigationItem.title = "r/\(postList.subreddit)"
-        postList.fetch { [unowned self] in
-            DispatchQueue.main.async(execute: self.tableView.reloadData)
+        postList.fetch { [weak self] in
+            DispatchQueue.main.async { self?.tableView.reloadData() }
         }
     }
 
@@ -186,7 +95,6 @@ extension RedditPostListViewController {
 }
 
 extension RedditPostListViewController : UITableViewDataSource {
-
     func numberOfSections(in tableView: UITableView) -> Int {
         return PostListSection.NumberOfSections
     }
