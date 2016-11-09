@@ -12,7 +12,15 @@ import UIKit
 class RedditPostListViewModel : NSObject {
     private(set) var posts: [RedditPostViewModel] = []
 
-    var subreddit: String = "argentina"
+    var subreddit: String = "argentina" {
+        didSet {
+            subredditChanged = true
+        }
+    }
+
+    var subredditChanged: Bool = true
+
+
     var count: Int { return posts.count }
 
     private let service = RedditAPI()
@@ -25,7 +33,10 @@ class RedditPostListViewModel : NSObject {
 
     func fetch(callback: @escaping (Void) -> Void) {
         _ = service.fetchListingFor(subreddit: subreddit, continueToken: continueToken) { [weak self] result in
-            defer { callback() }
+            defer {
+                callback()
+                self?.subredditChanged = false
+            }
             guard let sself = self else { return }
             switch result {
             case .error(let error):

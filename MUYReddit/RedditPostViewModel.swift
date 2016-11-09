@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SafariServices
 
 class RedditPostViewModel : NSObject {
     private static let backgroundQueue = DispatchQueue(label: "viewmodel")
@@ -18,6 +19,7 @@ class RedditPostViewModel : NSObject {
     }
 
     var title: String { return post.title }
+
     var subtitle: NSAttributedString {
         let subtitle = NSMutableAttributedString()
         let attribution = NSAttributedString(string: "por \(post.author)", attributes: [NSForegroundColorAttributeName : UIColor.black])
@@ -25,6 +27,35 @@ class RedditPostViewModel : NSObject {
         subtitle.append(attribution)
         subtitle.append(source)
         return subtitle
+    }
+
+    var webLinkURL: URL {
+        switch post.content {
+        case .left(_):
+            fatalError("web link URL requested on a text post")
+        case .right(let url):
+            return url
+        }
+    }
+
+    var contentViewController: UIViewController {
+        switch post.content {
+        case .left(_): // text content
+            return UIViewController()
+        case .right(_): // web link
+            let vc = RedditWebContentViewController()
+            vc.viewModel = self
+            return vc
+        }
+    }
+
+    var titleColor: UIColor {
+        switch post.content {
+        case .left(_): // text content
+            return .red
+        case .right(_): // web link
+            return .green
+        }
     }
 
     private var cachedResult: Result<UIImage>? = nil

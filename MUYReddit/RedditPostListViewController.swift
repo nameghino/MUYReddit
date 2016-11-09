@@ -22,6 +22,7 @@ class RedditPostListViewController: UIViewController {
 
     var postList: RedditPostListViewModel = RedditPostListViewModel(subreddit: "argentina") {
         didSet {
+//            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
             update()
         }
     }
@@ -35,10 +36,6 @@ class RedditPostListViewController: UIViewController {
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         navigationItem.title = "Cargando..."
 
@@ -46,16 +43,21 @@ class RedditPostListViewController: UIViewController {
         tgr.numberOfTapsRequired = 1
         tgr.numberOfTouchesRequired = 1
 
-        navigationController?.navigationBar.addGestureRecognizer(tgr)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "r/", style: .plain, target: self, action: #selector(showSubredditSelector))
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.navigationBar.gestureRecognizers?.forEach { navigationItem.titleView?.removeGestureRecognizer($0) }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard
+            let cell = sender as? UITableViewCell,
+            let destination = segue.destination as? RedditPostViewController,
+            let indexPath = tableView.indexPath(for: cell)
+        else { return }
+        let post = self.postList[indexPath.row]
+        destination.viewModel = post
     }
 }
 
@@ -85,6 +87,7 @@ extension RedditPostListViewController {
                 }
             }()
 
+            sself.tableView.scrollToRow(at: IndexPath(row: 0, section:0), at: .top, animated: false)
             sself.postList = RedditPostListViewModel(subreddit: subreddit)
         }
 
@@ -127,6 +130,7 @@ extension RedditPostListViewController : UITableViewDataSource {
     }
 
     private func set(content: RedditPostViewModel, forCell cell: UITableViewCell) {
+//        cell.contentView.backgroundColor = content.titleColor
         cell.textLabel?.text = content.title
         cell.textLabel?.numberOfLines = 0
         cell.detailTextLabel?.attributedText = content.subtitle
@@ -136,11 +140,6 @@ extension RedditPostListViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let section = PostListSection(rawValue: indexPath.section), section == .loadMore else { return }
         update()
-    }
-
-    @objc(tableView:didEndDisplayingCell:forRowAtIndexPath:)
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        postList[indexPath.row].cancelThumbnailFetch()
     }
 }
 
