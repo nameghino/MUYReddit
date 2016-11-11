@@ -10,7 +10,6 @@ import Foundation
 
 struct RedditPost : Resource {
     let author: String
-    let content: Either<String, URL>
     let title: String
     let name: String
     let thumbnailURL: URL?
@@ -18,6 +17,9 @@ struct RedditPost : Resource {
     let downvotes: Int
     let commentCount: Int
     let domain: String
+    let selfText: String?
+    let url: URL?
+    let isSelfPost: Bool
 
     init(container: [String : AnyObject]) {
         do {
@@ -32,12 +34,22 @@ struct RedditPost : Resource {
             downvotes = try "downs" <- container
             commentCount = try "num_comments" <- container
 
-            content = { (Void) -> Either<String, URL> in
-                if let selftext: String = (try? "selftext" <- container) { return .left(selftext) }
-                if let urlString: String = (try? "url" <- container), let url = URL(string: urlString) { return .right(url) }
-                print(container)
-                fatalError("should not be here")
+            isSelfPost = ((try "is_self" <- container) as Int == 0 ? false : true)
+
+            selfText = {
+                if let selftext: String = (try? "selftext" <- container), !selftext.isEmpty {
+                    return selftext
+                }
+                return nil
             }()
+
+            url = {
+                if let urlString: String = (try? "url" <- container), let url = URL(string: urlString) {
+                    return url
+                }
+                return nil
+            }()
+
 
         } catch (let error) {
             fatalError("\(error)")
@@ -48,7 +60,7 @@ struct RedditPost : Resource {
 extension RedditPost : CustomDebugStringConvertible {
     var debugDescription: String {
         var s = "\"\(title)\" by \(author)"
-        if case .right(let url) = content {
+        if let url = url {
             s += " links to [\(url.absoluteString)]"
         }
         return s
