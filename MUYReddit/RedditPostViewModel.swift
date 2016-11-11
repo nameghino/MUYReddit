@@ -29,20 +29,23 @@ class RedditPostViewModel : NSObject {
         return subtitle
     }
 
-    var webLinkURL: URL {
-        switch post.content {
-        case .left(_):
-            fatalError("web link URL requested on a text post")
-        case .right(let url):
-            return url
-        }
-    }
+    var webLinkURL: URL? { return post.url }
+
+    var selfText: String? { return post.selfText }
 
     var titleColor: UIColor {
-        switch post.content {
-        case .left(_): // text content
+        return post.isSelfPost ? .red : .blue
+    }
+
+    var backgroundColor: UIColor {
+        switch (webLinkURL, selfText) {
+        case (nil, nil):
             return .red
-        case .right(_): // web link
+        case (_, nil):
+            return .blue
+        case (nil, _):
+            return .yellow
+        case (_, _):
             return .green
         }
     }
