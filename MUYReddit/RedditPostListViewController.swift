@@ -7,12 +7,22 @@
 //
 
 import UIKit
+import SafariServices
 
 private enum PostListSection: Int {
     case posts
     case loadMore
 
     static let NumberOfSections = 2
+}
+
+extension RedditPostViewModel {
+    var targetDetailViewController: UIViewController {
+        if let webLinkURL = webLinkURL {
+            return SFSafariViewController(url: webLinkURL)
+        }
+        fatalError()
+    }
 }
 
 class RedditPostListViewController: UIViewController {
@@ -22,7 +32,6 @@ class RedditPostListViewController: UIViewController {
 
     var postList: RedditPostListViewModel = RedditPostListViewModel(subreddit: "argentina") {
         didSet {
-//            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
             update()
         }
     }
@@ -36,28 +45,18 @@ class RedditPostListViewController: UIViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidLoad() {
         navigationItem.title = "Cargando..."
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
         let tgr = UITapGestureRecognizer(target: self, action: #selector(showSubredditSelector))
         tgr.numberOfTapsRequired = 1
         tgr.numberOfTouchesRequired = 1
-
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "r/", style: .plain, target: self, action: #selector(showSubredditSelector))
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.navigationBar.gestureRecognizers?.forEach { navigationItem.titleView?.removeGestureRecognizer($0) }
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard
-            let cell = sender as? UITableViewCell,
-            let destination = segue.destination as? RedditPostViewController,
-            let indexPath = tableView.indexPath(for: cell)
-        else { return }
-        let post = self.postList[indexPath.row]
-        destination.viewModel = post
     }
 }
 
@@ -65,7 +64,9 @@ extension RedditPostListViewController {
     fileprivate func update() {
         navigationItem.title = "r/\(postList.subreddit)"
         postList.fetch { [weak self] in
-            DispatchQueue.main.async { self?.tableView.reloadData() }
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
         }
     }
 
@@ -87,7 +88,6 @@ extension RedditPostListViewController {
                 }
             }()
 
-            sself.tableView.scrollToRow(at: IndexPath(row: 0, section:0), at: .top, animated: false)
             sself.postList = RedditPostListViewModel(subreddit: subreddit)
         }
 
@@ -130,7 +130,8 @@ extension RedditPostListViewController : UITableViewDataSource {
     }
 
     private func set(content: RedditPostViewModel, forCell cell: UITableViewCell) {
-//        cell.contentView.backgroundColor = content.titleColor
+        cell.textLabel?.textColor = content.titleColor
+        cell.contentView.backgroundColor = content.backgroundColor
         cell.textLabel?.text = content.title
         cell.textLabel?.numberOfLines = 0
         cell.detailTextLabel?.attributedText = content.subtitle
@@ -144,5 +145,9 @@ extension RedditPostListViewController : UITableViewDataSource {
 }
 
 extension RedditPostListViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = self.postList[indexPath.row]
+        present(post.targetDetailViewController, animated: true, completion: nil)
+    }
 }
 
