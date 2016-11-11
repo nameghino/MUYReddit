@@ -23,16 +23,21 @@ class RedditPostListViewModel : NSObject {
 
     var count: Int { return posts.count }
 
-    private let service = RedditAPI()
+    private let service: RedditAPIProtocol
 
     private var continueToken: String? = nil
 
-    init(subreddit: String) {
+    init(redditService: RedditAPIProtocol = RedditAPI(), subreddit: String) {
+        self.service = redditService
         self.subreddit = subreddit
     }
 
     func fetch(callback: @escaping (Void) -> Void) {
-        _ = service.fetchListingFor(subreddit: subreddit, continueToken: continueToken) { [weak self] result in
+        _ = service.fetchListingFor(
+        subreddit: subreddit,
+        order: RedditAPI.Order.hot,
+        count: 20,
+        continueToken: continueToken) { [weak self] result in
             defer {
                 callback()
                 self?.subredditChanged = false
