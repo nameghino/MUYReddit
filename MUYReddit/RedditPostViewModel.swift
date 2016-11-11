@@ -38,17 +38,6 @@ class RedditPostViewModel : NSObject {
         }
     }
 
-    var contentViewController: UIViewController {
-        switch post.content {
-        case .left(_): // text content
-            return UIViewController()
-        case .right(_): // web link
-            let vc = RedditWebContentViewController()
-            vc.viewModel = self
-            return vc
-        }
-    }
-
     var titleColor: UIColor {
         switch post.content {
         case .left(_): // text content
