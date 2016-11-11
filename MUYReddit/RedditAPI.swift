@@ -14,6 +14,15 @@ public enum MUYRedditError : Error {
     case cocoa(NSError)
 }
 
+protocol RedditAPIProtocol {
+    func fetchListingFor(
+    subreddit: String,
+    order: RedditAPI.Order,
+    count: Int,
+    continueToken: String?,
+    callback: @escaping (Result<RedditListingAPIResponse>) -> Void) -> TaskIdentifier
+}
+
 struct RedditListingAPIResponse : Resource {
     
     let posts: [RedditPost]
@@ -38,7 +47,7 @@ struct RedditListingAPIResponse : Resource {
 }
 
 
-class RedditAPI : Networking {
+class RedditAPI : Networking, RedditAPIProtocol {
     enum Order : String {
         case top = "top"
         case hot = "hot"
