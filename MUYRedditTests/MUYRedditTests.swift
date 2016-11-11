@@ -29,27 +29,16 @@ class MUYRedditTests: XCTestCase {
             e.fulfill()
         }
         waitForExpectations(timeout: 5, handler: nil)
-
     }
-    
+
     func testRealListing() {
         let e = expectation(description: "fetch hot posts from r/argentina :-)")
-        
-        let api = RedditAPI()
-        let taskIdentifier = api.fetchListingFor(subreddit: "argentina", order: .hot) { result in
-            defer { e.fulfill() }
-            switch result {
-            case .error(let error):
-                XCTFail("\(error)")
-            case .success(let r):
-                for p in r.posts {
-                    print(p)
-                }
-                let post = r.posts.first
-                XCTAssert(post != nil)
-            }
+        let postsViewModel = RedditPostListViewModel(redditService: RedditAPI(), subreddit: "argentina")
+        postsViewModel.fetch {
+            XCTAssert(postsViewModel.count == 20)
+            e.fulfill()
         }
-        
+
         waitForExpectations(timeout: 10, handler: nil)
     }
 }
