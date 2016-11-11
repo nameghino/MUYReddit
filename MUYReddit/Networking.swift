@@ -30,7 +30,6 @@ public enum NetworkError : Error {
 }
 
 public protocol Networking {
-    //    associatedtype ResourceType
     func request<ResourceType: Resource>(request: URLRequest, fireImmediately: Bool, callback: @escaping (Result<ResourceType>) -> Void) -> URLSessionTask
 }
 
@@ -58,7 +57,6 @@ extension Networking {
                     callback(r)
                     return
                 }
-                
                 let resource = ResourceType(container: container)
                 let result = Result<ResourceType>.success(resource)
                 callback(result)
