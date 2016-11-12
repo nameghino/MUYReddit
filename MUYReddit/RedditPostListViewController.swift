@@ -13,15 +13,26 @@ private enum PostListSection: Int {
     case posts
     case loadMore
 
-    static let NumberOfSections = 2
+    static let Count = 2
 }
 
 extension RedditPostViewModel {
     var targetDetailViewController: UIViewController {
         if let webLinkURL = webLinkURL {
             return SFSafariViewController(url: webLinkURL)
+        } else if isSelfPost {
+            return RedditSelfPostViewController(viewModel: self)
         }
-        fatalError()
+        fatalError("unhandled post type")
+    }
+
+    var debugColor: UIColor {
+        if let _ = webLinkURL {
+            return .blue
+        } else if isSelfPost {
+            return .green
+        }
+        return.red
     }
 }
 
@@ -99,7 +110,7 @@ extension RedditPostListViewController {
 
 extension RedditPostListViewController : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return PostListSection.NumberOfSections
+        return PostListSection.Count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -130,6 +141,7 @@ extension RedditPostListViewController : UITableViewDataSource {
     }
 
     private func set(content: RedditPostViewModel, forCell cell: UITableViewCell) {
+        cell.textLabel?.textColor = content.debugColor
         cell.textLabel?.text = content.title
         cell.textLabel?.numberOfLines = 0
         cell.detailTextLabel?.attributedText = content.subtitle

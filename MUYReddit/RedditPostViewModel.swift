@@ -29,6 +29,8 @@ class RedditPostViewModel : NSObject {
         return subtitle
     }
 
+    var isSelfPost: Bool { return post.isSelfPost }
+
     var webLinkURL: URL? { return post.url }
 
     var selfText: String? { return post.selfText }
