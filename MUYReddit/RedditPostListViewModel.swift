@@ -12,7 +12,7 @@ import UIKit
 class RedditPostListViewModel : NSObject {
     private(set) var posts: [RedditPostViewModel] = []
 
-    var subreddit: String = "argentina" {
+    var subreddit: String = "swift" {
         didSet {
             subredditChanged = true
         }

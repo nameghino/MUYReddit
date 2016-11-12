@@ -30,7 +30,7 @@ class RedditPostListViewController: UIViewController {
     fileprivate static let PostCellReuseIdentifier = "RedditPostCell"
     fileprivate static let PagingCellReuseIdentifier = "PagingCell"
 
-    var postList: RedditPostListViewModel = RedditPostListViewModel(subreddit: "argentina") {
+    var postList: RedditPostListViewModel = RedditPostListViewModel(subreddit: "swift") {
         didSet {
             update()
         }
