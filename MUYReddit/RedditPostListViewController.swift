@@ -130,8 +130,6 @@ extension RedditPostListViewController : UITableViewDataSource {
     }
 
     private func set(content: RedditPostViewModel, forCell cell: UITableViewCell) {
-        cell.textLabel?.textColor = content.titleColor
-        cell.contentView.backgroundColor = content.backgroundColor
         cell.textLabel?.text = content.title
         cell.textLabel?.numberOfLines = 0
         cell.detailTextLabel?.attributedText = content.subtitle
